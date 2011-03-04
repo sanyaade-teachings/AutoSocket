@@ -1,0 +1,15 @@
+Automatic Sockets
+Jerry Lee Williams Jr
+
+Automatic Sockets let you use read from asynchronous sockets without
+having to drive them yourself.
+
+Use:
+Create the AutoSocket.
+Use Connect() to connect to the server.
+Set up your callback in DataRecv.
+Use Send() to send bytes.
+Send(string) encodes the string in UTF-8 to send.
+There is no Recv() because you will be notified.
+Use Dispose() or Close() to close.
+You can check the connection with Connected.
