@@ -33,7 +33,7 @@ class AutoSocket: IDisposable {
 	public event AutoSocketDataEvent DataRecv;
 	public Socket Socket;
 	public bool IsConnected {
-		get { return this.Socket.Connected; }
+		get { return this.Socket != null && this.Socket.Connected; }
 	}
 	byte[]	buffer;
 	
@@ -60,19 +60,22 @@ class AutoSocket: IDisposable {
 	}
 	
 	public void Close() {
-		this.Socket.Close();
+		if (this.IsConnected)
+			this.Socket.Close();
 		this.buffer = null;
 	}
 	
 	public void Dispose() {
-		this.Close();
+		if (this.IsConnected)
+			this.Close();
 	}
 	
 	public void Send(byte[] bytes) {
-		this.Socket.BeginSend(bytes, 0, bytes.Length,
-			SocketFlags.None,
-			new AsyncCallback(this.OnSend),
-			this.Socket);
+		if (this.IsConnected)
+			this.Socket.BeginSend(bytes, 0, bytes.Length,
+				SocketFlags.None,
+				new AsyncCallback(this.OnSend),
+				this.Socket);
 	}
 	
 	public void Send(string data) {
